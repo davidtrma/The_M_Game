@@ -45,3 +45,6 @@ TagManager:
   - name: Suelo
     uniqueID: 2478331889
     locked: 0
+  - name: Player
+    uniqueID: 3245914799
+    locked: 0

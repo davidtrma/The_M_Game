@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public  Rigidbody2D Rigidbody2D;
-    public float moveSpeed , damage;
+    public float moveSpeed , damage , vida;
     private Transform target;
     public Animator animator;
 
@@ -45,5 +45,20 @@ public class Enemy : MonoBehaviour
         {
             PlayerHealth.instance.TakeDamage(damage);
         }
+    }
+
+    public void TomarDaño(float daño)
+    {
+        vida -= daño;
+
+        if (vida <= 0) 
+        {
+            Muerte();
+        }
+    }
+
+    private void Muerte()
+    {
+        animator.SetTrigger("Muerte");
     }
 }

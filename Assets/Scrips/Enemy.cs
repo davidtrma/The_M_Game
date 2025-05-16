@@ -18,26 +18,26 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         Rigidbody2D.velocity = (target.position - transform.position).normalized * moveSpeed;
-        
-        
 
-        if (Rigidbody2D.velocity.x > 0) 
+        float horizontal = Rigidbody2D.velocity.x;
+
+        if (horizontal > 0)
         {
-            transform.localScale = new Vector3(1, 1, 1);
+            transform.rotation = Quaternion.Euler(0, 0, 0);
             animator.SetBool("IsMoving", true);
         }
-        if (Rigidbody2D.velocity.x < 0) 
+        else if (horizontal < 0)
         {
-            transform.localScale = new Vector3(-1, 1, 1);
+            transform.rotation = Quaternion.Euler(0, 180, 0);
             animator.SetBool("IsMoving", true);
         }
-
-        if (Rigidbody2D.velocity.x == 0) { 
-            animator.SetBool("IsMoving",false);
+        else
+        {
+            animator.SetBool("IsMoving", false);
         }
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

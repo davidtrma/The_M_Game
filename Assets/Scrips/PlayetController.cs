@@ -1,13 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;  // Velocidad del personaje
+    public int danio = 15;
 
+    public Collider2D ControladorAtaque;
     private Rigidbody2D rigidbody;
     private Vector2 moveInput;
     private Animator animator;
+    public Transform attackPoint;
 
+    private int defaultLayer;
+    private bool invulnerable = false;
     private bool isAttacking = false;  // Flag para verificar si el personaje está atacando
     private Vector2 attackDirection = Vector2.up;  // Dirección de ataque predeterminada (por defecto hacia arriba)
 
@@ -15,6 +21,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        defaultLayer = gameObject.layer;
     }
 
     // Update is called once per frame
@@ -65,6 +72,7 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("IsAttacking", true);  // Inicia la animación de ataque
         animator.SetFloat("MoveX", direction.x);
         animator.SetFloat("MoveY", direction.y);
+        PositionControladorAtaque(direction);
         Invoke(nameof(ResetAttack), 0.3f);  // Tiempo de duración del ataque
     }
 
@@ -83,5 +91,63 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("MoveY", moveInput.y);
             animator.SetFloat("Speed", moveInput.magnitude);
         }
+    }
+
+    public void RecibeDanio(int danio)
+    {
+        if (!invulnerable)
+        {
+            invulnerable = true;
+            animator.SetBool("Hit",true); 
+            StartCoroutine(InvulnerabilidadTemporal(1f));
+        }
+    }
+
+
+    private IEnumerator InvulnerabilidadTemporal(float duracion)
+    {
+        gameObject.layer = LayerMask.NameToLayer("PlayerInvulnerable");
+
+        float elapsed = 0f;
+        SpriteRenderer sprite = GetComponent<SpriteRenderer>();
+        while (elapsed < duracion)
+        {
+            sprite.enabled = !sprite.enabled;
+            yield return new WaitForSeconds(0.1f);
+            elapsed += 0.1f;
+        }
+        sprite.enabled = true;
+
+        gameObject.layer = defaultLayer;
+        invulnerable = false;
+        animator.SetBool("Hit", false);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            Enemy enemy = collision.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TomarDaño(danio);
+            }
+        }
+    }
+
+    public void PositionControladorAtaque(Vector2 direction)
+    {
+        Vector3 offset = Vector3.zero;
+
+        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+        {
+            offset = direction.x > 0 ? Vector3.right : Vector3.left;
+        }
+        else
+        {
+            offset = direction.y > 0 ? Vector3.up : Vector3.down;
+        }
+
+        attackPoint.localPosition = offset; 
     }
 }

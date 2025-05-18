@@ -5,7 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public  Rigidbody2D Rigidbody2D;
-    public float moveSpeed , damage , vida;
+    public float moveSpeed , damage , vida, tiempoMuerte;
+    private bool recibiendoDanio;
     private Transform target;
     public Animator animator;
 
@@ -41,11 +42,36 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (PlayerHealth.instance.tag == "Player")
+        if (collision.gameObject.CompareTag("Player"))
         {
-            PlayerHealth.instance.TakeDamage(damage);
+            collision.gameObject.GetComponent<PlayerController>().RecibeDanio(1);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Espada"))
+        {
+            RecibeDanio(1);
+        }
+    }
+
+    public void RecibeDanio(int danio)
+    {
+        if (!recibiendoDanio)
+        {
+            recibiendoDanio = true;
+            animator.SetBool("IsHurt", true);
+            Invoke(nameof(DesactivaDanio), 0.3f);
+        }
+    }
+
+    public void DesactivaDanio()
+    {
+        recibiendoDanio = false;
+        animator.SetBool("IsHurt", false);
+    }
+
 
     public void TomarDaño(float daño)
     {
@@ -60,5 +86,6 @@ public class Enemy : MonoBehaviour
     private void Muerte()
     {
         animator.SetTrigger("Muerte");
+        Destroy(gameObject, tiempoMuerte);
     }
 }

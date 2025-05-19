@@ -1,43 +1,49 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    private float minX, minY, maxX, maxY;
+
     [SerializeField] private Transform[] puntos;
     [SerializeField] private GameObject[] enemigos;
-    [SerializeField] private float tiempoEnemigos;
-    private float tiempoSiguienteEnemigo;
+    [SerializeField] private float tiempoEnemigos = 2f;
+    private float tiempoSiguienteEnemigo = 4f;
+    private int enemigosCreados = 0;
+    public int maxEnemigos = 5;
 
-    // Start is called before the first frame update
-    void Start()
+    private SpawnerManager spawnerManager;
+
+    public void SetSpawnerManager(SpawnerManager manager)
     {
-        maxX = puntos.Max(puntos => puntos.position.x);
-        maxY = puntos.Max(puntos=>puntos.position.y);
-        minX = puntos.Min(puntos => puntos.position.x);
-        minY = puntos.Min(puntos=>puntos.position.y);
+        spawnerManager = manager;
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        tiempoSiguienteEnemigo += Time.deltaTime;
+        StartCoroutine(CrearEnemigosConTimer());
 
-        if (tiempoSiguienteEnemigo >= tiempoEnemigos) 
+    }
+
+    IEnumerator CrearEnemigosConTimer()
+    {
+        while (enemigosCreados < maxEnemigos)
         {
-            tiempoSiguienteEnemigo = 0;
-
+            yield return new WaitForSeconds(tiempoSiguienteEnemigo);
             CrearEnemigo();
+            enemigosCreados++;
         }
+
+        if (spawnerManager != null)
+        {
+            spawnerManager.InstanciarSiguienteSpawner();
+        }
+
+        Destroy(gameObject);
     }
 
     private void CrearEnemigo()
     {
         int numeroEnemigo = Random.Range(0, enemigos.Length);
-        Vector2 posicionAleatoria = new Vector2(Random.Range(minX,maxX), Random.Range(minY, maxY));
-
-        Instantiate(enemigos[numeroEnemigo],posicionAleatoria,Quaternion.identity);
+        Instantiate(enemigos[numeroEnemigo], puntos[0].position, Quaternion.identity);
     }
 }

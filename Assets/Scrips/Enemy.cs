@@ -18,74 +18,40 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         target = FindObjectOfType<PlayerController>().transform;
+       
     }
 
-    // Update is called once per frame
-    void Update()
-    {
+   // Update is called once per frame
+       void Update()
+        {
         float distancia = Vector2.Distance(transform.position, target.position);
 
-        if (distancia > rangoAtaque)
-        {
-            Rigidbody2D.velocity = (target.position - transform.position).normalized * moveSpeed;
+        Vector2 direccion = (target.position - transform.position).normalized;
+        Rigidbody2D.velocity = direccion * moveSpeed;
 
-            float horizontal = Rigidbody2D.velocity.x;
+        if (direccion.x > 0)
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        else if (direccion.x < 0)
+            transform.rotation = Quaternion.Euler(0, 180, 0);
 
-            if (horizontal > 0)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                animator.SetBool("IsMoving", true);
-            }
-            else if (horizontal < 0)
-            {
-                transform.rotation = Quaternion.Euler(0, 180, 0);
-                animator.SetBool("IsMoving", true);
-            }
-            else
-            {
-                animator.SetBool("IsMoving", false);
-            }
-            animator.SetBool("IsAttack", false);
-        }
-        else
-        {
-            Rigidbody2D.velocity = Vector2.zero;
-            animator.SetBool("IsMoving", false);
-
-            if (Time.time >= tiempoUltimoAtaque)
-            {
-                animator.SetBool("IsAttack", true);
-                AplicarDanio();
-                tiempoUltimoAtaque = Time.time + tiempoEntreAtaques;
-            }
-            else
-            {
-                animator.SetBool("IsAttack", false);
-            }
-        }
-    }
-
-    void AplicarDanio()
-    {
-        if (target != null)
-        {
-            PlayerController jugador = target.GetComponent<PlayerController>();
-            if (jugador != null)
-            {
-                jugador.RecibeDanio(damage);
-            }
-        }
-    }
-
-
+        animator.SetBool("IsMoving", true);
+       }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+
+        if (collision.collider.CompareTag("Player"))
         {
+            animator.SetBool("IsAttack", true);
             collision.gameObject.GetComponent<PlayerController>().RecibeDanio(damage);
         }
+        Invoke(nameof(DesactivaAtaque), 1f);
+    }
+
+    public void DesactivaAtaque()
+    {
+        animator.SetBool("IsAttack", false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -101,6 +101,7 @@ public class PlayerController : MonoBehaviour
         if (!invulnerable)
         {
             invulnerable = true;
+            currentHealth -= danio;
             animator.SetBool("Hit",true); 
             StartCoroutine(InvulnerabilidadTemporal(1f));
         }

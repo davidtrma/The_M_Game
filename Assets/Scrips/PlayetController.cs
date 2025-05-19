@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     public float speed = 5f;  // Velocidad del personaje
     public int danio = 15;
+    public float currentHealth;
+    public float maxHealth;
 
     public Collider2D ControladorAtaque;
     private Rigidbody2D rigidbody;
@@ -22,6 +24,7 @@ public class PlayerController : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         defaultLayer = gameObject.layer;
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame

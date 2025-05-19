@@ -14626,11 +14626,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 917546530}
-  moveSpeed: 2.5
-  damage: 25
+  moveSpeed: 2
+  damage: 30
   vida: 150
   tiempoMuerte: 3
   animator: {fileID: 917546526}
+  rangoAtaque: 2
+  tiempoEntreAtaques: 2
 --- !u!50 &917546530
 Rigidbody2D:
   serializedVersion: 4
@@ -14717,7 +14719,6 @@ GameObject:
   - component: {fileID: 1345249248}
   - component: {fileID: 1345249247}
   - component: {fileID: 1345249246}
-  - component: {fileID: 1345249252}
   m_Layer: 0
   m_Name: MainCharacter
   m_TagString: Player
@@ -14739,6 +14740,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   danio: 50
+  currentHealth: 0
+  maxHealth: 100
   ControladorAtaque: {fileID: 1617648202}
   attackPoint: {fileID: 1617648201}
 --- !u!61 &1345249247
@@ -14902,20 +14905,6 @@ Transform:
   - {fileID: 1617648201}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1345249252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345249245}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e312e1d89eeb6b4cbd85bc76d8a5a95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHealth: 0
-  maxHealth: 1000
 --- !u!1 &1429941360
 GameObject:
   m_ObjectHideFlags: 0
@@ -15497,11 +15486,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 1982873160}
-  moveSpeed: 3.5
+  moveSpeed: 3
   damage: 10
-  vida: 50
+  vida: 30
   tiempoMuerte: 1
   animator: {fileID: 1982873161}
+  rangoAtaque: 1.5
+  tiempoEntreAtaques: 1
 --- !u!50 &1982873160
 Rigidbody2D:
   serializedVersion: 4
@@ -15942,11 +15933,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 2134262006}
-  moveSpeed: 3
-  damage: 10
-  vida: 75
-  tiempoMuerte: 1.5
+  moveSpeed: 2
+  damage: 15
+  vida: 50
+  tiempoMuerte: 1
   animator: {fileID: 2134262007}
+  rangoAtaque: 1.5
+  tiempoEntreAtaques: 1.5
 --- !u!4 &2134262009
 Transform:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ TagManager:
   - Fondo
   - Espada
   - Enemy
+  - Llave
   layers:
   - Default
   - TransparentFX

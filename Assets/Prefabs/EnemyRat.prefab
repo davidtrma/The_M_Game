@@ -149,13 +149,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 8929005069079449745}
-  moveSpeed: 3
-  damage: 10
+  Collider2D: {fileID: 7710795260735691398}
+  moveSpeed: 5
+  damage: 5
   vida: 30
   tiempoMuerte: 1
   animator: {fileID: 4815454412815430141}
   rangoAtaque: 1.5
   tiempoEntreAtaques: 1
+  dropObjeto: {fileID: 972371588074475786, guid: 78544c75dce425843a628b276f2b7035, type: 3}
 --- !u!61 &7710795260735691398
 BoxCollider2D:
   m_ObjectHideFlags: 0

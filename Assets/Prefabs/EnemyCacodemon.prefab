@@ -49,13 +49,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 441480508811612182}
+  Collider2D: {fileID: 8253600274587759516}
   moveSpeed: 2
   damage: 15
-  vida: 50
+  vida: 40
   tiempoMuerte: 1
   animator: {fileID: 6851490484743006759}
   rangoAtaque: 1.5
   tiempoEntreAtaques: 1.5
+  dropObjeto: {fileID: 972371588074475786, guid: 78544c75dce425843a628b276f2b7035, type: 3}
 --- !u!95 &6851490484743006759
 Animator:
   serializedVersion: 5

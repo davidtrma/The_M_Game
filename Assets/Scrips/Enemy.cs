@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public  Rigidbody2D Rigidbody2D;
+    public Collider2D Collider2D;
     public int moveSpeed , damage , vida, tiempoMuerte;
     private bool recibiendoDanio;
     private Transform target;
@@ -12,6 +13,7 @@ public class Enemy : MonoBehaviour
     public float rangoAtaque = 1.5f;
     public float tiempoEntreAtaques = 1f;
     private float tiempoUltimoAtaque;
+    public GameObject dropObjeto;
 
 
     // Start is called before the first frame update
@@ -96,7 +98,10 @@ public class Enemy : MonoBehaviour
 
     private void Muerte()
     {
+        Instantiate(dropObjeto, transform.position, Quaternion.identity);
         animator.SetTrigger("Muerte");
+        moveSpeed = 0;
+        GetComponent<Collider2D>().enabled = false;
         Destroy(gameObject, tiempoMuerte);
     }
 }

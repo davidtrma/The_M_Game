@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     public int danio = 15;
     public float currentHealth;
     public float maxHealth;
+    [SerializeField] private GameObject menuDerrota;
+    [SerializeField] private GameObject menuVictoria;
 
     public Collider2D ControladorAtaque;
     private Rigidbody2D rigidbody;
@@ -21,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         rigidbody = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         defaultLayer = gameObject.layer;
@@ -33,6 +36,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement();
         HandleAttackInput();
         UpdateAnimator();
+        Cheat();
     }
 
     void FixedUpdate()
@@ -102,7 +106,8 @@ public class PlayerController : MonoBehaviour
         {
             invulnerable = true;
             currentHealth -= danio;
-            animator.SetBool("Hit",true); 
+            animator.SetBool("Hit", true);
+            Derrota();
             StartCoroutine(InvulnerabilidadTemporal(1f));
         }
     }
@@ -137,6 +142,22 @@ public class PlayerController : MonoBehaviour
                 enemy.TomarDaño(danio);
             }
         }
+
+        if (collision.CompareTag("Llave"))
+        {
+            Victoria();
+            Destroy(collision.gameObject);
+            MusicManager.Instance.CambiarMusica(MusicManager.Instance.musicaVictoria);
+        }
+    }
+
+    public void Victoria()
+    {
+        if (menuVictoria != null)
+        {
+            menuVictoria.SetActive(true);
+            Time.timeScale = 0f; 
+        }
     }
 
     public void PositionControladorAtaque(Vector2 direction)
@@ -145,13 +166,31 @@ public class PlayerController : MonoBehaviour
 
         if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
         {
-            offset = direction.x > 0 ? Vector3.right : Vector3.left;
+            offset = direction.x > 0 ? Vector3.right / 2 : Vector3.left / 2;
         }
         else
         {
-            offset = direction.y > 0 ? Vector3.up : Vector3.down;
+            offset = direction.y > 0 ? Vector3.up / 2 : Vector3.down / 2;
         }
 
-        attackPoint.localPosition = offset; 
+        attackPoint.localPosition = offset;
+    }
+
+    public void Derrota()
+    {
+        if (currentHealth <= 0)
+        {
+            Time.timeScale = 0f;
+            menuDerrota.SetActive(true);
+            MusicManager.Instance.CambiarMusica(MusicManager.Instance.musicaDerrota);
+        }
+    }
+
+    public void Cheat()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) 
+        { 
+            currentHealth=currentHealth+50;
+        }
     }
 }

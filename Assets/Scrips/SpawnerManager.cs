@@ -4,6 +4,7 @@ using UnityEngine;
 public class SpawnerManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] spawnerPrefabs; // 3 prefabs distintos
+    [SerializeField] private GameObject spawnerBoss;
     private int spawnerActual = 0;
 
     void Start()
@@ -24,6 +25,15 @@ public class SpawnerManager : MonoBehaviour
         else
         {
             Debug.Log("Todos los spawners han terminado.");
+            Invoke(nameof(InstanciarBoss), 15f);
         }
+    }
+
+    public void InstanciarBoss()
+    {
+        Vector3 BossPosition = new Vector3(0,8,0);
+        Instantiate(spawnerBoss, BossPosition, Quaternion.identity)
+               .GetComponent<SpawnerBoss>();
+        MusicManager.Instance.CambiarMusica(MusicManager.Instance.musicaBoss);
     }
 }

@@ -194,10 +194,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rigidbody2D: {fileID: 839724945599219624}
+  Collider2D: {fileID: 8003109075857902512}
   moveSpeed: 2
   damage: 30
-  vida: 150
-  tiempoMuerte: 3
+  vida: 100
+  tiempoMuerte: 2
   animator: {fileID: 4151750951476743650}
   rangoAtaque: 2
   tiempoEntreAtaques: 2
+  dropObjeto: {fileID: 7419835062351393132, guid: 313780ea1f4e8f847a479002f6ba1e1b, type: 3}
